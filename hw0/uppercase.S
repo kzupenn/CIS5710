@@ -15,6 +15,19 @@ _start:
         la a0, input_string
 
         # Your code here!
+
+convert_loop:
+    lbu t0, 0(a0)
+
+    beqz t0, end_program
+
+    addi t0, t0, -32
+    sb t0, 0(a0)
+
+not_lowercase:
+    addi a0, a0, 1
+
+    j convert_loop
         
 end_program:
         # jump here when you're done
