@@ -21,6 +21,13 @@ convert_loop:
 
     beqz t0, end_program
 
+    li t1, 'a'
+    li t2, 'z'
+    sltu t3, t0, t1   # t3 = (t0 < 'a')
+    sltu t4, t2, t0   # t4 = ('z' < t0)
+    bnez t3, not_lowercase
+    bnez t4, not_lowercase
+
     addi t0, t0, -32
     sb t0, 0(a0)
 
