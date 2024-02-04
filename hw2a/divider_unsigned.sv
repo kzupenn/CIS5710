@@ -1,4 +1,5 @@
-/* Kevin Zhang, kz2025 */
+/*  Kevin Zhang, kz2025
+    Justina Lam, jklam */
 
 `timescale 1ns / 1ns
 
