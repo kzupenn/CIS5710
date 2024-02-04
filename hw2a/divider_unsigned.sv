@@ -10,20 +10,22 @@ module divider_unsigned (
     output wire [31:0] o_remainder,
     output wire [31:0] o_quotient
 );
-    wire [31:0] b_dividend, b_remainder, b_quotient [32];
+    wire [31:0] b_dividend [33];
+    wire [31:0] b_remainder [33];
+    wire [31:0] b_quotient [33];
+    
     assign b_dividend[0] = i_dividend;
     assign b_remainder[0] = 32'b0;
     assign b_quotient[0] = 32'b0;
 
     genvar i;
     for(i = 0; i < 32; i+=1) begin
-        divu_1iter iter(.i_dividend(b_dividend[i]), .i_divisor(i_divisor), 
-        .i_remainder(b_remainder[i]), .i_quotient(b_quotient[i]),
+        divu_1iter iter(.i_dividend(b_dividend[i]), .i_divisor(i_divisor), .i_remainder(b_remainder[i]), .i_quotient(b_quotient[i]),
         .o_dividend(b_dividend[i+1]), .o_quotient(b_quotient[i+1]), .o_remainder(b_remainder[i+1]));
     end
 
-    assign o_remainder = b_remainder[31];
-    assign o_quotient = b_quotient[31];
+    assign o_remainder = b_remainder[32];
+    assign o_quotient = b_quotient[32];
 
 endmodule
 

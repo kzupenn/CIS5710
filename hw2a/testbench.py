@@ -71,6 +71,7 @@ async def test_simple0(dut):
     await Timer(1, "ns")
     assert 2 == dut.o_quotient.value
     assert 0 == dut.o_remainder.value
+    
 
 @cocotb.test()
 async def test_simple1(dut):
