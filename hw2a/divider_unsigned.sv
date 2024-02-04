@@ -1,4 +1,4 @@
-/* INSERT NAME AND PENNKEY HERE */
+/* Kevin Zhang, kz2025 */
 
 `timescale 1ns / 1ns
 
@@ -10,8 +10,20 @@ module divider_unsigned (
     output wire [31:0] o_remainder,
     output wire [31:0] o_quotient
 );
+    wire [31:0] b_dividend, b_remainder, b_quotient [32];
+    assign b_dividend[0] = i_dividend;
+    assign b_remainder[0] = 32'b0;
+    assign b_quotient[0] = 32'b0;
 
-    // TODO: your code here
+    genvar i;
+    for(i = 0; i < 32; i+=1) begin
+        divu_1iter iter(.i_dividend(b_dividend[i]), .i_divisor(i_divisor), 
+        .i_remainder(b_remainder[i]), .i_quotient(b_quotient[i]),
+        .o_dividend(b_dividend[i+1]), .o_quotient(b_quotient[i+1]), .o_remainder(b_remainder[i+1]));
+    end
+
+    assign o_remainder = b_remainder[31];
+    assign o_quotient = b_quotient[31];
 
 endmodule
 
@@ -25,19 +37,21 @@ module divu_1iter (
     output wire [31:0] o_remainder,
     output wire [31:0] o_quotient
 );
-  /*
-    for (int i = 0; i < 32; i++) {
-        remainder = (remainder << 1) | ((dividend >> 31) & 0x1);
-        if (remainder < divisor) {
-            quotient = (quotient << 1);
-        } else {
-            quotient = (quotient << 1) | 0x1;
-            remainder = remainder - divisor;
-        }
-        dividend = dividend << 1;
-    }
-    */
+    logic [31:0] temp_remainder_1, temp_remainder_2, temp_quotient;
+    assign temp_remainder_1 = ((i_remainder << 1) | ((i_dividend >> 31) & 32'b1));
 
-    // TODO: your code here
+    always_comb begin
+        if (temp_remainder_1 < i_divisor) begin
+            assign temp_quotient = (i_quotient << 1);
+            assign temp_remainder_2 = temp_remainder_1;
+        end else begin
+            assign temp_quotient = ((i_quotient << 1) | 32'b1);
+            assign temp_remainder_2 = temp_remainder_1 - i_divisor;
+        end
+    end
+
+    assign o_remainder = temp_remainder_2;
+    assign o_quotient = temp_quotient;
+    assign o_dividend = i_dividend << 1;
 
 endmodule
