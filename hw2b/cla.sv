@@ -59,8 +59,8 @@ module cla
    output wire [31:0] sum);
 
    wire [31:0] p, g;
-   p = a^b;
-   g = a&b;
+   assign p = a^b;
+   assign g = a&b;
    // TODO: your code here
    gp8 u1(.gin(), .pin(), .cin(), .gout(), .pout(), .cout());
    gp8 u2(.gin(), .pin(), .cin(), .gout(), .pout(), .cout());
